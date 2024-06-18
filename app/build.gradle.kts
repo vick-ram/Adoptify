@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.ksp)
 }
@@ -65,6 +66,8 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.hilt.android)
     implementation(libs.symbol.processing.api)
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.paging.compose)
     ksp(libs.hilt.compiler)
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.room.runtime)
@@ -74,7 +77,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.coil.compose)
-    implementation(libs.androidx.hilt.lifecycle.viewmodel)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
