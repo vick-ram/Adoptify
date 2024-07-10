@@ -1,5 +1,8 @@
 package vick.tech.adoptify.domain.viewmodel
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -8,17 +11,20 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import vick.tech.adoptify.core.RootNavRoutes
+import vick.tech.adoptify.core.auth.AuthInterceptor
 import vick.tech.adoptify.data.util.DataStore
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val dataStore: DataStore
+    private val dataStore: DataStore,
+    private val authInterceptor: AuthInterceptor
 ): ViewModel() {
-    private val _isReady = MutableStateFlow(true)
+    private val _isReady = MutableStateFlow(false)
     val isReady = _isReady.asStateFlow()
-    private val _startDestination = MutableStateFlow(RootNavRoutes.Onboarding.route)
-    val startDestination = _startDestination.asStateFlow()
+
+    private val _startDestination: MutableState<String> = mutableStateOf(RootNavRoutes.Onboarding.route)
+    val startDestination: State<String> = _startDestination
 
     init {
         viewModelScope.launch {
@@ -29,7 +35,13 @@ class MainViewModel @Inject constructor(
             } else {
                 RootNavRoutes.Onboarding.route
             }
-            _isReady.value = false
+            _isReady.value = true
+        }
+    }
+
+    init {
+        viewModelScope.launch {
+            authInterceptor.refreshToken()
         }
     }
 

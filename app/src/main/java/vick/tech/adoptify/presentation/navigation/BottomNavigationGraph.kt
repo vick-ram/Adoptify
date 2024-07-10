@@ -8,8 +8,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import androidx.paging.compose.LazyPagingItems
 import vick.tech.adoptify.OnboardingScreen
 import vick.tech.adoptify.core.RootNavRoutes
+import vick.tech.adoptify.domain.models.Animal
+import vick.tech.adoptify.domain.viewmodel.AnimalViewModel
 import vick.tech.adoptify.domain.viewmodel.MainViewModel
 import vick.tech.adoptify.presentation.MainScreen
 import vick.tech.adoptify.presentation.screens.FavoriteScreen
@@ -21,7 +24,8 @@ fun MainNavigationGraph(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     startDestination: String,
-    mainViewModel: MainViewModel
+    mainViewModel: MainViewModel,
+    animalViewModel: AnimalViewModel
 ) {
     NavHost(
         route = RootNavRoutes.Root.route,
@@ -40,26 +44,27 @@ fun MainNavigationGraph(
             )
         }
         composable(RootNavRoutes.Main.route) {
-            MainScreen()
+            MainScreen(animalViewModel = animalViewModel)
         }
     }
-
 }
 
 fun NavGraphBuilder.homeGraph(
     modifier: Modifier,
     navController: NavHostController,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    animals: LazyPagingItems<Animal>
 ) {
     navigation(
         route = RootNavRoutes.Main.route,
         startDestination = NavigationItems.HOME.route,
-    ){
+    ) {
         composable(NavigationItems.HOME.route) {
             HomeScreen(
                 modifier = modifier,
                 navigate = {},
-                paddingValues = paddingValues
+                paddingValues = paddingValues,
+                animals = animals
             )
         }
         composable(NavigationItems.FAVORITE.route) {

@@ -52,8 +52,7 @@ fun CustomSearchField(
             .background(
                 color = MaterialTheme.colorScheme.surface,
                 shape = RoundedCornerShape(28.dp)
-            )
-            .padding(horizontal = 16.dp),
+            ),
         shape = RoundedCornerShape(28.dp),
         tonalElevation = 4.dp
     ) {
